@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Error loading app</title>
+    <style>
+      body { font-family: system-ui, sans-serif; background: #0b1223; color: #fff; display:flex; align-items:center; justify-content:center; height:100vh; margin:0; }
+      .card { max-width:720px; padding:24px; border-radius:8px; background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)); box-shadow: 0 6px 30px rgba(0,0,0,0.6); }
+      pre { white-space:pre-wrap; word-break:break-word; }
+      button { margin-top:12px; padding:8px 12px; border-radius:6px; background:#7c3aed; color:white; border:none; cursor:pointer }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h2>Error cargando la aplicación</h2>
+      <p>Ha ocurrido un error al cargar la UI. Abre las DevTools con el botón para ver la consola y copia los errores o envíame el archivo de logs.</p>
+      <div>
+        <button id="open">Abrir DevTools</button>
+        <button id="showlog">Abrir carpeta de logs</button>
+      </div>
+      <p style="opacity:0.8; font-size:12px; margin-top:12px">Si puedes, copia/pega aquí los mensajes de la consola o envía el archivo <code>renderer-errors.log</code> que se guarda en la carpeta de datos de la app.</p>
+    </div>
+    <script>
+      const { openExternal } = window.electronAPI || {};
+      document.getElementById('open').addEventListener('click', () => { try { window.open('about:blank','_blank'); } catch (e){}; if (window?.process?.type) { require('electron').remote.getCurrentWindow().webContents.openDevTools(); } });
+      document.getElementById('showlog').addEventListener('click', () => {
+        if (window.electronAPI && window.electronAPI.openExternal) {
+          // open app data folder. This will only work if electronAPI exposes it (we didn't). Fallback: instruct user.
+          alert('Busca el archivo renderer-errors.log en la carpeta de datos de la app (AppData on Windows).');
+        } else {
+          alert('Busca el archivo renderer-errors.log en la carpeta de datos de la app (AppData on Windows).');
+        }
+      });
+    </script>
+  </body>
+</html>
