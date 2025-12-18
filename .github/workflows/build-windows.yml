@@ -15,7 +15,11 @@ jobs:
   build-windows:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repo (for push)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -43,6 +47,33 @@ jobs:
         with:
           name: windows-artifacts
           path: dist/**/*
+
+      - name: Commit artifacts to `builds` branch
+        run: |
+          ART_DIR=builds/windows/${{ github.ref_name || 'build-' + github.run_number }}
+          mkdir -p "$ART_DIR"
+          echo "Copying artifacts to $ART_DIR"
+          cp -r dist/* "$ART_DIR/" || true
+          ls -la "$ART_DIR"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # switch to builds branch (create if missing)
+          if git show-ref --verify --quiet refs/heads/builds; then
+            git checkout builds
+            git pull origin builds || true
+          else
+            git checkout -b builds
+          fi
+
+          # remove previous folder for same tag/run to keep branch tidy
+          git rm -rf "$ART_DIR" || true
+          git add "$ART_DIR"
+          git commit -m "Add Windows build artifacts: ${{ github.ref_name || 'build-' + github.run_number }}" || echo "No changes to commit"
+          git push origin builds --force
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create Release (if requested)
         if: >
