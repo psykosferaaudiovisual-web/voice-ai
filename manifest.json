@@ -1,0 +1,22 @@
+{
+  "short_name": "VoxClon",
+  "name": "VoxClon IA Studio",
+  "icons": [
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjEyOCIgZmlsbD0iIzFBMjAyQyIvPjxwYXRoIGQ9Ik0yNTYgMzIwYTM2IDM2IDAgMDEtMzYtMzZWMTI4YTM2IDM2IDAgMTcyIDcyIDM2IDM2IDAgMDEtMzYgMzZ6IiBmaWxsPSIjQTRDNkZBIi8+PHBhdGggZD0iTTM2NiAyMTJ2NDRjMCA1NS01MiA5OC0xMTAgOThzLTExMC00My0xMTAtOTh2LTQ0aDM2djQ0YzAgMzkgMzcgNzAgNzQgNzBzNzQtMzEgNzQtNzB2LTQ0aDM2em0tOTIgMTQydjYwaC0zNnYtNjBoMzZ6IiBmaWxsPSIjQTRDNkZBIi8+PC9zdmc+",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjEyOCIgZmlsbD0iIzFBMjAyQyIvPjxwYXRoIGQ9Ik0yNTYgMzIwYTM2IDM2IDAgMDEtMzYtMzZWMTI4YTM2IDM2IDAgMTcyIDcyIDM2IDM2IDAgMDEtMzYgMzZ6IiBmaWxsPSIjQTRDNkZBIi8+PHBhdGggZD0iTTM2NiAyMTJ2NDRjMCA1NS01MiA5OC0xMTAgOThzLTExMC00My0xMTAtOTh2LTQ0aDM2djQ0YzAgMzkgMzcgNzAgNzQgNzBzNzQtMzEgNzQtNzB2LTQ0aDM2em0tOTIgMTQydjYwaC0zNnYtNjBoMzZ6IiBmaWxsPSIjQTRDNkZBIi8+PC9zdmc+",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#0f172a",
+  "background_color": "#0f172a",
+  "orientation": "portrait"
+}

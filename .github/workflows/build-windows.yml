@@ -1,0 +1,73 @@
+name: Build Windows installers and publish Release
+
+on:
+  push:
+    branches: [ main ]
+    tags: ['v*', 'release-*']
+  workflow_dispatch:
+    inputs:
+      create_release:
+        description: 'Create a GitHub Release and attach artifacts'
+        required: false
+        default: 'true'
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: npm ci
+      - name: Build renderer
+        run: npm run build
+      - name: Ensure ImageMagick available
+        run: |
+          if (Get-Command magick -ErrorAction SilentlyContinue) { Write-Host 'magick available' } else { choco install imagemagick -y }
+      - name: Generate Windows icon from SVG
+        run: magick convert build/icon.svg -resize 256x256 build/icon.ico || npm run build:icons
+      - name: Build Windows installer (NSIS & Portable)
+        run: npx electron-builder --win nsis --x64 --publish never
+
+      - name: Collect artifacts list
+        run: |
+          echo "ARTIFACTS<<EOF" >> $GITHUB_OUTPUT
+          ls -1 dist | sed -n '1,200p' >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Upload artifacts (temporary)
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-artifacts
+          path: dist/**/*
+
+      - name: Create Release (if requested)
+        if: github.event_name == 'push' && (startsWith(github.ref, 'refs/tags/') || github.event.inputs.create_release == 'true')
+        uses: actions/create-release@v1
+        id: create_release
+        with:
+          tag_name: ${{ github.ref_name || 'build-' + github.run_number }}
+          release_name: "Windows build - ${{ github.ref_name || github.run_number }}"
+          body: |
+            Windows installers and portable build for commit `${{ github.sha }}`.
+          draft: true
+          prerelease: false
+
+      - name: Upload release assets
+        if: steps.create_release.outputs.upload_url != ''
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            dist/*.exe
+            dist/*.zip
+            dist/*.AppImage
+            dist/*.nsis.*
+            dist/win-unpacked/**/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Final message
+        run: echo "Release steps completed. Check Actions artifacts or Releases tab."

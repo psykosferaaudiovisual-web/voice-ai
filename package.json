@@ -1,0 +1,58 @@
+{
+  "name": "voxclon-ia---studio",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "dev": "vite",
+    "start:electron": "ELECTRON_DEV=true electron .",
+    "build": "vite build",
+    "build:icons": "npx svg2ico build/icon.svg > build/icon.ico",
+    "package": "npm run build && npm run build:icons && electron-builder",
+    "dist:win": "npm run build && npm run build:icons && electron-builder --win --x64",
+    "dist:portable": "npm run build && npm run build:icons && electron-builder --win portable",
+    "preview": "vite preview"
+  },
+  "build": {
+    "appId": "com.psykosfera.voxclon",
+    "productName": "VoxClon IA",
+    "directories": {
+      "buildResources": "build"
+    },
+    "icon": "build/icon.ico",
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "artifactName": "${productName}-Setup-${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true
+    }
+  },
+  "dependencies": {
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "@google/genai": "^1.33.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "typescript": "~5.8.2",
+    "vite": "^6.2.0",
+    "electron": "^25.5.0",
+    "electron-builder": "^24.6.0",
+    "svg2ico": "^1.1.0"
+  }
+}

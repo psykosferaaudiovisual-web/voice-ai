@@ -1,0 +1,7 @@
+{
+  "name": "VoxClon IA - Studio",
+  "description": "Estudio profesional de clonación de voz y TTS realista en español utilizando Gemini IA.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}

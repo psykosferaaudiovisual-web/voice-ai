@@ -1,0 +1,3 @@
+Replace this file with a Windows icon named `icon.ico` (256x256 recommended).
+
+Place the file at `build/icon.ico` to customize the Windows installer and app icon.
