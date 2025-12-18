@@ -8,7 +8,7 @@
     "dev": "vite",
     "start:electron": "ELECTRON_DEV=true electron .",
     "build": "vite build",
-    "build:icons": "npx svg2ico build/icon.svg > build/icon.ico",
+    "build:icons": "convert build/icon.svg -resize 256x256 build/icon.ico || magick convert build/icon.svg -resize 256x256 build/icon.ico || npx svg2ico build/icon.svg > build/icon.ico",
     "package": "npm run build && npm run build:icons && electron-builder",
     "dist:win": "npm run build && npm run build:icons && electron-builder --win --x64",
     "dist:portable": "npm run build && npm run build:icons && electron-builder --win portable",

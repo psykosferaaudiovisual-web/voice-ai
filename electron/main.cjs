@@ -63,6 +63,18 @@ function createWindow() {
       win.webContents.openDevTools({ mode: 'detach' });
     });
   }
+
+  // If an indicator file exists (e.g., created by CI for debug builds), always open DevTools
+  try {
+    const debugFlag = path.join(__dirname, 'always_open_devtools');
+    if (require('fs').existsSync(debugFlag)) {
+      win.webContents.once('did-finish-load', () => {
+        win.webContents.openDevTools({ mode: 'detach' });
+      });
+    }
+  } catch (e) {
+    // ignore
+  }
 }
 
 app.whenReady().then(createWindow);

@@ -33,6 +33,20 @@ jobs:
           if (Get-Command magick -ErrorAction SilentlyContinue) { Write-Host 'magick available' } else { choco install imagemagick -y }
       - name: Generate Windows icon from SVG
         run: magick convert build/icon.svg -resize 256x256 build/icon.ico || npm run build:icons
+
+      - name: Enable debug DevTools for debug tags (create indicator file)
+        run: |
+          echo "Checking tag for '-debug'..."
+          TAG_NAME="${GITHUB_REF##*/}"
+          if [[ "$TAG_NAME" == *"-debug"* ]]; then
+            echo "Creating indicator file to force DevTools open"
+            mkdir -p electron
+            touch electron/always_open_devtools
+            ls -la electron
+          else
+            echo "Not a debug tag: $TAG_NAME"
+          fi
+
       - name: Build Windows installer (NSIS & Portable)
         run: npx electron-builder --win nsis --x64 --publish never
 
